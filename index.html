@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>YieldVault — Weather Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>YieldVault Weather Dashboard</h1>
+    </header>
+
+    <main>
+      <div class="controls">
+        <input id="city-input" placeholder="Enter city (e.g., London)" aria-label="City" />
+        <button id="search-btn">Search</button>
+        <button id="loc-btn">Use My Location</button>
+      </div>
+
+      <section id="weather" class="weather hidden" aria-live="polite">
+        <h2 id="location"></h2>
+        <div class="row">
+          <img id="icon" alt="weather icon" />
+          <div class="details">
+            <div id="temp" class="temp"></div>
+            <div id="desc" class="desc"></div>
+            <div id="more" class="more"></div>
+          </div>
+        </div>
+      </section>
+
+      <div id="error" class="error" role="status"></div>
+    </main>
+
+    <footer>
+      Powered by OpenWeatherMap — add your API key in <code>config.js</code>
+    </footer>
+  </div>
+
+  <script src="config.example.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
