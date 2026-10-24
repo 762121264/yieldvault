@@ -3,43 +3,49 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>YieldVault — Weather Dashboard</title>
+  <meta name="theme-color" content="#10231d" />
+  <meta name="description" content="YieldVault — a simple dashboard for savings goals and investment tracking." />
+  <title>YieldVault — Savings & Investments</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>YieldVault Weather Dashboard</h1>
-    </header>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="YieldVault home"><span class="brand-mark">Y</span><span>Yield<span class="brand-light">Vault</span></span></a>
+      <p class="nav-label">WORKSPACE</p>
+      <a class="nav-item active" href="#overview"><span>▦</span> Overview</a>
+      <a class="nav-item" href="#goals"><span>◉</span> Savings goals</a>
+      <a class="nav-item" href="#investments"><span>↗</span> Investments</a>
+      <a class="nav-item" href="#activity"><span>↻</span> Activity</a>
+      <div class="sidebar-note"><span class="status-dot"></span><strong>Demo workspace</strong><p>Your information stays in this browser. No real funds are moved.</p></div>
+      <div class="sidebar-bottom">YIELDVAULT <span>v1.0</span></div>
+    </aside>
 
-    <main>
-      <div class="controls">
-        <input id="city-input" placeholder="Enter city (e.g., London)" aria-label="City" />
-        <button id="search-btn">Search</button>
-        <button id="loc-btn">Use My Location</button>
-      </div>
+    <main class="main" id="overview">
+      <header class="topbar"><div><p class="eyebrow">PERSONAL FINANCE</p><h1>Your money, with a plan.</h1></div><div class="profile"><span class="avatar">Y</span><span class="profile-name">My workspace</span></div></header>
+      <section class="welcome"><div><span class="pill"><span class="status-dot"></span> PRIVATE DEMO</span><h2>Build your financial future.</h2><p>Track savings goals, organize investments, and keep your next steps in view.</p></div><div class="welcome-icon" aria-hidden="true">↗</div></section>
 
-      <section id="weather" class="weather hidden" aria-live="polite">
-        <h2 id="location"></h2>
-        <div class="row">
-          <img id="icon" alt="weather icon" />
-          <div class="details">
-            <div id="temp" class="temp"></div>
-            <div id="desc" class="desc"></div>
-            <div id="more" class="more"></div>
-          </div>
-        </div>
+      <section class="metric-grid" aria-label="Financial overview">
+        <article class="metric-card primary"><div class="metric-heading"><span>Total tracked savings</span><span class="metric-icon">◈</span></div><p class="metric-value" id="total-balance">UGX 0</p><p class="metric-foot">Based on entries you add</p></article>
+        <article class="metric-card"><div class="metric-heading"><span>Active goals</span><span class="metric-icon green">◎</span></div><p class="metric-value" id="goal-count">0</p><p class="metric-foot">Savings targets you're working toward</p></article>
+        <article class="metric-card"><div class="metric-heading"><span>Investment tracking</span><span class="metric-icon violet">↗</span></div><p class="metric-value" id="investment-count">0</p><p class="metric-foot">Positions entered manually</p></article>
       </section>
 
-      <div id="error" class="error" role="status"></div>
-    </main>
+      <section class="section" id="goals"><div class="section-head"><div><p class="eyebrow">SAVE WITH PURPOSE</p><h2>Your savings goals</h2></div><button class="button button-dark" id="add-goal-open">＋ Add a goal</button></div><div class="goal-grid" id="goal-list"></div><div class="empty-state" id="goal-empty"><div class="empty-icon">◎</div><h3>Your first goal starts here</h3><p>Make a goal for an emergency fund, education, a business, or something important to you.</p><button class="button button-outline" id="empty-add-goal">Create savings goal</button></div></section>
 
-    <footer>
-      Powered by OpenWeatherMap — add your API key in <code>config.js</code>
-    </footer>
+      <section class="section" id="investments"><div class="section-head"><div><p class="eyebrow">STAY INFORMED</p><h2>Investment watchlist</h2></div><button class="button button-outline" id="add-investment-open">＋ Track investment</button></div><div class="table-wrap"><table><thead><tr><th>Investment / asset</th><th>Amount invested</th><th>Current value</th><th>Change</th></tr></thead><tbody id="investment-list"></tbody></table><div class="table-empty" id="investment-empty">No investments tracked yet. Add an entry to monitor values you provide.</div></div><p class="disclaimer">Values are entered manually and are not live market prices or investment recommendations. Returns are not guaranteed.</p></section>
+
+      <section class="section" id="activity"><div class="section-head"><div><p class="eyebrow">YOUR RECORD</p><h2>Recent activity</h2></div><button class="text-button" id="clear-activity">Clear demo records</button></div><div class="activity-list" id="activity-list"></div><div class="table-empty" id="activity-empty">Your added goals and demo records will appear here.</div></section>
+
+      <section class="payments-panel"><div class="payments-symbol">⇄</div><div class="payments-copy"><h3>Mobile Money payments</h3><p>MTN MoMo and Airtel Money are planned payment options. Live deposits and withdrawals require an approved payment-provider integration.</p></div><span class="pending-tag">Integration pending</span></section>
+      <footer><span>© YieldVault</span><span>Demo only · No real deposits or investment execution</span></footer>
+    </main>
   </div>
 
-  <script src="config.example.js"></script>
+  <dialog id="goal-dialog"><form id="goal-form" method="dialog"><div class="dialog-head"><div><p class="eyebrow">NEW SAVINGS TARGET</p><h2>Create a goal</h2></div><button type="button" class="close-button" data-close="goal-dialog" aria-label="Close">×</button></div><label for="goal-name">Goal name</label><input id="goal-name" name="name" required maxlength="60" placeholder="e.g. Emergency fund" /><div class="form-row"><div><label for="goal-target">Target amount (UGX)</label><input id="goal-target" name="target" type="number" min="1" step="1" required placeholder="500000" /></div><div><label for="goal-saved">Already saved (UGX)</label><input id="goal-saved" name="saved" type="number" min="0" step="1" value="0" required /></div></div><p class="form-hint">This records a plan only. It does not move money.</p><button class="button button-dark full-button" type="submit">Save goal</button></form></dialog>
+
+  <dialog id="investment-dialog"><form id="investment-form" method="dialog"><div class="dialog-head"><div><p class="eyebrow">MANUAL TRACKING</p><h2>Track an investment</h2></div><button type="button" class="close-button" data-close="investment-dialog" aria-label="Close">×</button></div><label for="investment-name">Investment / asset name</label><input id="investment-name" required maxlength="60" placeholder="e.g. Treasury bond" /><div class="form-row"><div><label for="investment-cost">Amount invested (UGX)</label><input id="investment-cost" type="number" min="0" step="1" required /></div><div><label for="investment-value">Current value (UGX)</label><input id="investment-value" type="number" min="0" step="1" required /></div></div><p class="form-hint">Enter values from your own records. This is not connected to a broker or market feed.</p><button class="button button-dark full-button" type="submit">Add to watchlist</button></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>
 </html>
